@@ -26,12 +26,12 @@
             position: relative;
         }
 
-        /* --- AJUSTE DEL ÁRBOL --- */
+        /* --- DECORACIÓN ÁRBOL --- */
         .arbol-bg {
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 30%; /* Un poco más pequeño para que se vea mejor */
+            width: 30%;
             max-width: 350px;
             min-width: 180px;
             opacity: 0.4; 
@@ -52,6 +52,7 @@
             animation: floatBackground 12s infinite linear;
         }
 
+        /* --- TARJETA --- */
         .card {
             background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(15px);
@@ -89,13 +90,14 @@
             font-weight: 900;
         }
 
+        /* --- BOTONES Y LÓGICA DE BLOQUEO --- */
         .btn-group {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 15px;
             flex-wrap: wrap;
-            position: relative; /* Importante para las burbujas */
+            position: relative;
         }
 
         button {
@@ -110,9 +112,23 @@
             z-index: 20;
         }
 
+        /* Estado inicial bloqueado */
         #yesBtn {
             background: var(--primary);
             color: white;
+            opacity: 0.6; 
+            filter: grayscale(0.5);
+            cursor: not-allowed;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2);
+        }
+
+        /* Estado activo tras presionar No */
+        #yesBtn.active {
+            opacity: 1;
+            filter: none;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 77, 109, 0.5);
+            animation: pulse 2s infinite;
         }
 
         #noBtn {
@@ -139,7 +155,12 @@
             100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        /* --- BURBUJAS DESDE EL BOTÓN --- */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
         .bubble {
             position: absolute;
             background: white;
@@ -189,7 +210,7 @@
             <img src="gif.gif" class="gif-final" alt="Celebración">
         </div>
         <h1>¡Sabía que aceptarías! ❤️</h1>
-        <p style="color: #ff4d6d; font-weight: 800; font-size: 1.3rem;">Nos vemos el 14.</p>
+        <p style="color: #ff4d6d; font-weight: 800; font-size: 1.3rem;">Nos vemos el 14 mi amor. 💕💐</p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -198,6 +219,7 @@
         let currentFontSize = 1.1;
         let audioIniciado = false;
         let ultimaFraseIndex = -1;
+        let gameStarted = false; // Controla si el botón Sí está activo
 
         const frasesNo = [
             "Andaaaaa 😔👍",
@@ -211,7 +233,7 @@
         function startAudio() {
             if (!audioIniciado) {
                 const audio = document.getElementById('musicaFondo');
-                audio.play().catch(e => console.log("Audio bloqueado temporalmente"));
+                audio.play().catch(e => console.log("Esperando clic..."));
                 audioIniciado = true;
             }
         }
@@ -221,7 +243,12 @@
             const yesBtn = document.getElementById('yesBtn');
             const container = document.getElementById('container-botones');
             
-            // Lógica para no repetir frase consecutiva
+            // ACTIVACIÓN DEL BOTÓN SÍ
+            if (!gameStarted) {
+                gameStarted = true;
+                yesBtn.classList.add('active');
+            }
+
             let randomIndex;
             do {
                 randomIndex = Math.floor(Math.random() * frasesNo.length);
@@ -237,20 +264,20 @@
             yesBtn.style.fontSize = `${currentFontSize}rem`;
             yesBtn.style.padding = `${currentFontSize * 12}px ${currentFontSize * 24}px`;
 
-            // Crear burbuja DESDE la posición del botón NO
+            // Burbuja
             const bubble = document.createElement('div');
             bubble.className = 'bubble';
             bubble.innerText = nuevaFrase;
-            
-            // Posicionar la burbuja justo encima del botón NO
             bubble.style.left = noBtn.offsetLeft + "px";
             bubble.style.top = (noBtn.offsetTop - 30) + "px";
-            
             container.appendChild(bubble);
             setTimeout(() => bubble.remove(), 1500);
         }
 
         function handleYes() {
+            // Solo funciona si ya se intentó dar al No
+            if (!gameStarted) return;
+
             document.getElementById('question-card').style.display = 'none';
             document.getElementById('success-container').style.display = 'flex';
             confetti({

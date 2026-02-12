@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para ti ❤️</title>
+    <title>Para mi princesa ❤️</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
 
         :root {
             --primary: #ff4d6d;
-            --secondary: #ff8fa3;
-            --bg: #fff0f3;
+            --rosa-palo: #f7dadd; 
             --text: #590d22;
         }
 
@@ -21,58 +20,60 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #fff5f7 0%, #fff0f3 100%);
+            background-color: var(--rosa-palo);
             font-family: 'Nunito', sans-serif;
-            overflow-x: hidden;
-            transition: background 1s ease; /* Transición suave para el final */
+            overflow: hidden;
+            position: relative;
         }
 
-        /* --- FONDO DE CORAZONES MEJORADO --- */
+        /* --- AJUSTE DEL ÁRBOL --- */
+        .arbol-bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 30%; /* Un poco más pequeño para que se vea mejor */
+            max-width: 350px;
+            min-width: 180px;
+            opacity: 0.4; 
+            z-index: 1;
+            pointer-events: none;
+        }
+
         .bg-hearts {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 0;
         }
 
         .bg-heart {
             position: absolute;
-            color: rgba(255, 77, 109, 0.25); /* Color suave */
-            font-size: 20px;
-            /* Animación compuesta: flotar + rotar suavemente */
-            animation: floatBackground 12s infinite linear, sway 3s infinite ease-in-out alternate;
+            color: rgba(255, 77, 109, 0.2);
+            animation: floatBackground 12s infinite linear;
         }
 
-        /* --- TARJETA PRINCIPAL (Glassmorphism Pro) --- */
         .card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             padding: 40px 25px;
-            border-radius: 35px;
-            box-shadow: 0 15px 45px rgba(255, 77, 109, 0.15);
+            border-radius: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
             text-align: center;
-            max-width: 600px;
-            width: 90%;
+            max-width: 450px;
+            width: 85%;
             z-index: 10;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Foto con borde elegante */
         .photo-frame {
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 20px;
+            width: 170px;
+            height: 170px;
+            margin: 0 auto 25px;
             border-radius: 50%;
-            border: 5px solid white;
-            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.25);
+            border: 6px solid white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             overflow: hidden;
-            background: #fff;
-            transition: transform 0.5s ease;
         }
 
         .photo-frame img {
@@ -83,325 +84,195 @@
 
         h1 {
             color: var(--text);
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            line-height: 1.2;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
             font-weight: 900;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        p.subtitle {
-            color: #d46a84;
-            font-size: 1.15rem;
-            margin-bottom: 35px;
-            font-weight: 700;
-        }
-
-        /* --- CONTENEDOR DE BOTONES (TU LÓGICA INTACTA) --- */
         .btn-group {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
-            flex-wrap: wrap; 
-            position: relative;
-            transition: all 0.3s ease;
+            gap: 15px;
+            flex-wrap: wrap;
+            position: relative; /* Importante para las burbujas */
         }
 
         button {
             padding: 15px 30px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             font-family: 'Nunito', sans-serif;
             font-weight: 800;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            position: relative;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 20;
-            white-space: nowrap;
         }
 
         #yesBtn {
-            background: linear-gradient(45deg, #ff4d6d, #ff8fa3);
+            background: var(--primary);
             color: white;
-            opacity: 0.6; 
-            filter: grayscale(0.5);
-            cursor: not-allowed;
-            /* Sombra suave */
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
-        }
-
-        /* Estado activo del botón SÍ: ¡Ahora brilla! */
-        #yesBtn.active {
-            opacity: 1;
-            filter: none;
-            cursor: pointer;
-            box-shadow: 0 8px 30px rgba(255, 77, 109, 0.5);
-            animation: pulseBtn 2s infinite;
         }
 
         #noBtn {
-            background-color: #fff0f3;
-            color: #d63384;
-            border: 2px solid #ffccd5;
+            background: white;
+            color: var(--text);
+            border: 2px solid #fce4ec;
         }
 
-        #noBtn:hover {
-            background-color: #fff;
-            transform: translateY(-2px);
-        }
-
-        /* --- BURBUJAS FLOTANTES --- */
-        .bubble {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 10px 20px;
-            border-radius: 20px;
-            color: #ff4d6d;
-            font-weight: 800;
-            font-size: 0.95rem;
-            pointer-events: none;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            animation: floatUpBubble 2s forwards;
-            z-index: 100;
-            white-space: nowrap;
-            border: 1px solid rgba(255,255,255,0.8);
-        }
-
-        /* --- PANTALLA FINAL (MEJORADA) --- */
         #success-container {
             display: none;
             flex-direction: column;
             align-items: center;
-            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Título final llamativo con latido */
-        #success-container h1 {
-            color: #ff2e63;
-            font-size: 2.5rem;
-            margin-top: 15px;
-            text-shadow: 0 4px 10px rgba(255, 77, 109, 0.2);
-            animation: heartbeat 1.5s infinite;
-        }
-
-        /* Borde brillante para la foto final */
-        .success-frame {
-            border-color: #ff4d6d;
-            box-shadow: 0 0 30px rgba(255, 77, 109, 0.5);
-        }
-
-        .success-img {
-            width: 280px;
-            border-radius: 20px;
+        .gif-final {
+            width: 250px;
+            border-radius: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
 
-        /* --- ANIMACIONES CSS --- */
         @keyframes floatBackground {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            20% { opacity: 0.8; }
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
             100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        @keyframes sway {
-            0% { margin-left: -10px; }
-            100% { margin-left: 10px; }
+        /* --- BURBUJAS DESDE EL BOTÓN --- */
+        .bubble {
+            position: absolute;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: floatUp 1.5s ease-out forwards;
+            white-space: nowrap;
+            z-index: 100;
+            pointer-events: none;
         }
 
-        @keyframes floatUpBubble {
-            0% { transform: translateY(0) scale(0.8); opacity: 0; }
-            20% { transform: translateY(-10px) scale(1.1); opacity: 1; }
-            100% { transform: translateY(-60px) scale(1); opacity: 0; }
-        }
-
-        @keyframes pulseBtn {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 77, 109, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
-        }
-
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.5); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            15% { transform: scale(1.1); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.1); }
-            60% { transform: scale(1); }
-            100% { transform: scale(1); }
+        @keyframes floatUp {
+            0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+            20% { opacity: 1; transform: translate(0, -20px) scale(1.1); }
+            100% { transform: translate(0, -80px) scale(1); opacity: 0; }
         }
     </style>
 </head>
-<body>
+<body onclick="startAudio()">
 
+    <audio id="musicaFondo" loop>
+        <source src="Brillas.mp3" type="audio/mpeg">
+    </audio>
+
+    <img src="arbol.png" class="arbol-bg" alt="decoracion">
     <div class="bg-hearts" id="bg-hearts"></div>
 
     <div class="card" id="question-card">
         <div class="photo-frame">
-            <img src="image.jpeg" 
-                 alt="Nosotros" 
-                 id="main-img"
-                 onerror="this.onerror=null;this.src='https://media.tenor.com/26XF9F5l0eAAAAAi/mocha-mochi.gif';">
+            <img src="image.jpeg" alt="Nosotros">
         </div>
         
-        <h1>Flakosa, <br>¿Quieres ser mi San Valentín? ❤️</h1>
-        <p class="subtitle">Prometo comprarte chocolates 🍫</p>
+        <h1>Holuu princesa ¿te gustaría ser mi San Valentín? ❤️</h1>
 
-        <div class="btn-group">
-            <button id="yesBtn" onclick="handleYes()">Sí 💖</button>
+        <div class="btn-group" id="container-botones">
+            <button id="yesBtn" onclick="handleYes()">¡Sí, acepto! 💖</button>
             <button id="noBtn" onclick="handleNo()">No 😢</button>
         </div>
     </div>
 
     <div class="card" id="success-container">
-        <div class="photo-frame success-frame">
-             <img src="https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif" class="success-img" alt="Besito">
+        <div class="photo-frame" style="width: 220px; height: 220px; border-radius: 20px;">
+            <img src="gif.gif" class="gif-final" alt="Celebración">
         </div>
         <h1>¡Sabía que aceptarías! ❤️</h1>
-        <p class="subtitle" style="color: #ff4d6d; font-size: 1.3rem;">Nos vemos el 14, tqm.</p>
+        <p style="color: #ff4d6d; font-weight: 800; font-size: 1.3rem;">Nos vemos el 14.</p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
-        // VARIABLES DE ESTADO
-        let gameStarted = false; 
-        let currentFontSize = 1.2; 
-        let currentPadding = 15; 
+        let currentFontSize = 1.1;
+        let audioIniciado = false;
+        let ultimaFraseIndex = -1;
 
-        // TUS FRASES
-        const bubblePhrases = [
-            "Apuraaa",
-            "Mueve oye",
-            "No seas malita",
-            "Dame chance",
-            "Lloro verás",
-            "TE COMPRO CHOCOLATES",
-            "Ya di que siii",
-            "Por favoooor"
+        const frasesNo = [
+            "Andaaaaa 😔👍",
+            "Dale porfa 🛐",
+            "Dame chance 🙏🙏",
+            "Di que si 👊",
+            "No te voy a decepcionar 🫦",
+            "Ya me dice que si? 👀"
         ];
 
-        const btnPhrases = [
-            "¿Segura?",
-            "Piénsalo",
-            "¿En serio?",
-            "💔💔💔",
-            "Mira que lloro",
-            "No seas así",
-            "No 😢"
-        ];
+        function startAudio() {
+            if (!audioIniciado) {
+                const audio = document.getElementById('musicaFondo');
+                audio.play().catch(e => console.log("Audio bloqueado temporalmente"));
+                audioIniciado = true;
+            }
+        }
 
         function handleNo() {
-            // 1. ACTIVAR EL JUEGO (si es la primera vez)
-            if (!gameStarted) {
-                gameStarted = true;
-                const yesBtn = document.getElementById('yesBtn');
-                yesBtn.classList.add('active'); // Se vuelve colorido y clickeable
-            }
-
-            // 2. HACER CRECER EL BOTÓN SÍ (Físicamente)
-            growYesButton();
-
-            // 3. CAMBIAR TEXTO DEL NO
             const noBtn = document.getElementById('noBtn');
-            noBtn.innerText = btnPhrases[Math.floor(Math.random() * btnPhrases.length)];
+            const yesBtn = document.getElementById('yesBtn');
+            const container = document.getElementById('container-botones');
+            
+            // Lógica para no repetir frase consecutiva
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * frasesNo.length);
+            } while (randomIndex === ultimaFraseIndex);
+            
+            ultimaFraseIndex = randomIndex;
+            const nuevaFrase = frasesNo[randomIndex];
 
-            // 4. LANZAR BURBUJA
-            createBubble();
+            noBtn.innerText = nuevaFrase;
+
+            // Crecer botón SÍ
+            currentFontSize += 0.4;
+            yesBtn.style.fontSize = `${currentFontSize}rem`;
+            yesBtn.style.padding = `${currentFontSize * 12}px ${currentFontSize * 24}px`;
+
+            // Crear burbuja DESDE la posición del botón NO
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.innerText = nuevaFrase;
+            
+            // Posicionar la burbuja justo encima del botón NO
+            bubble.style.left = noBtn.offsetLeft + "px";
+            bubble.style.top = (noBtn.offsetTop - 30) + "px";
+            
+            container.appendChild(bubble);
+            setTimeout(() => bubble.remove(), 1500);
         }
 
         function handleYes() {
-            if (!gameStarted) return;
-            acceptProposal();
-        }
-
-        function growYesButton() {
-            const yesBtn = document.getElementById('yesBtn');
-            // Aumentamos tamaño y padding para empujar al otro botón
-            currentFontSize += 0.4; 
-            currentPadding += 4;
-            yesBtn.style.fontSize = `${currentFontSize}rem`;
-            yesBtn.style.padding = `${currentPadding}px ${currentPadding * 2}px`;
-        }
-
-        function createBubble() {
-            const btnGroup = document.querySelector('.btn-group');
-            const noBtn = document.getElementById('noBtn');
-            const bubble = document.createElement('div');
-            
-            bubble.classList.add('bubble');
-            bubble.innerText = bubblePhrases[Math.floor(Math.random() * bubblePhrases.length)];
-            
-            // Posicionamiento
-            const randomX = (Math.random() - 0.5) * 50;
-            bubble.style.left = (noBtn.offsetLeft + noBtn.offsetWidth / 2 + randomX) + 'px';
-            bubble.style.top = (noBtn.offsetTop - 40) + 'px'; 
-
-            btnGroup.appendChild(bubble);
-            setTimeout(() => bubble.remove(), 2000);
-        }
-
-        function acceptProposal() {
             document.getElementById('question-card').style.display = 'none';
             document.getElementById('success-container').style.display = 'flex';
-            
-            // Cambio de fondo para celebrar
-            document.body.style.background = "linear-gradient(135deg, #fff0f3 0%, #ffc2d1 100%)";
-            
-            launchConfetti();
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff4d6d', '#ff8fa3', '#ffffff']
+            });
         }
 
-        function launchConfetti() {
-            const duration = 3000;
-            const end = Date.now() + duration;
-
-            (function frame() {
-                confetti({
-                    particleCount: 5,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: ['#ff4d6d', '#ff8fa3', '#ffffff']
-                });
-                confetti({
-                    particleCount: 5,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: ['#ff4d6d', '#ff8fa3', '#ffffff']
-                });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
-            }());
-        }
-
-        // Fondo de corazones animado
         function createHeart() {
             const container = document.getElementById('bg-hearts');
             const heart = document.createElement('div');
             heart.classList.add('bg-heart');
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 5 + 8 + 's';
-            
-            // Variación de opacidad y tamaño para profundidad
-            heart.style.opacity = Math.random() * 0.4 + 0.1;
-            heart.style.fontSize = Math.random() * 25 + 10 + 'px';
-            
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 5 + 8) + 's';
             container.appendChild(heart);
             setTimeout(() => heart.remove(), 12000);
         }
-
-        setInterval(createHeart, 500);
+        setInterval(createHeart, 600);
     </script>
 </body>
 </html>
